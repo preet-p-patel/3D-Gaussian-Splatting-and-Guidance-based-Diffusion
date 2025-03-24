@@ -280,7 +280,7 @@ class Gaussians:
         ### YOUR CODE HERE ###
         # HINT: Can you extract the world to camera rotation matrix (W) from one of the inputs
         # of this function?
-        W = (camera.R).inverse().unsqueeze(0).expand(quats.shape[0], -1, -1)  # (N, 3, 3)
+        W = (camera.R).inverse()  # (N, 3, 3)
 
         ### YOUR CODE HERE ###
         # HINT: Can you find a function in this file that can help?
