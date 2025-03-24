@@ -288,6 +288,9 @@ class Gaussians:
 
         ### YOUR CODE HERE ###
         # HINT: Use the above three variables to compute cov_2D
+        print("Shape of J: ", J.shape)
+        print("Shape of W: ", W.shape)
+        print("Shape of cov_3d: ", cov_3D.shape)
         cov_2D = J @ W @ cov_3D @ W.transpose(1, 2) @ J.transpose(1, 2)  # (N, 2, 2)
 
         # Post processing to make sure that each 2D Gaussian covers atleast approximately 1 pixel
