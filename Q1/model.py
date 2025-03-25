@@ -248,7 +248,9 @@ class Gaussians:
 
             ### YOUR CODE HERE ###
             R = quaternion_to_matrix(quats)
-            S = torch.diag_embed(scales)
+            S = torch.diag(scales)
+            print("shape of R:", R.shape)
+            print("shape of S:", S.shape)
             cov_3D = R @ S @ S.transpose(1, 2) @ R.transpose(1, 2)  # (N, 3, 3)
             print("An-isotropic: ", cov_3D.shape)
 
