@@ -279,7 +279,7 @@ class Gaussians:
         """
         ### YOUR CODE HERE ###
         # HINT: For computing the jacobian J, can you find a function in this file that can help?
-        J = self._compute_jacobian(means_3D=self.means, camera=camera, img_size=img_size)  # (N, 2, 3)
+        J = self._compute_jacobian(means_3D=means_3D, camera=camera, img_size=img_size)  # (N, 2, 3)
 
         ### YOUR CODE HERE ###
         # HINT: Can you extract the world to camera rotation matrix (W) from one of the inputs
