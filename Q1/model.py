@@ -241,6 +241,7 @@ class Gaussians:
 
             ### YOUR CODE HERE ###
             cov_3D = torch.eye(3).unsqueeze(0).repeat(quats.shape[0], 1, 1)  # (N, 3, 3)
+            print("Isotropic: ", cov_3D.shape)
 
         # HINT: You can use a function from pytorch3d to convert quaternions to rotation matrices.
         else:
@@ -249,6 +250,7 @@ class Gaussians:
             R = quaternion_to_matrix(quats)
             S = torch.diag_embed(scales)
             cov_3D = R @ S @ S.transpose(1, 2) @ R.transpose(1, 2)  # (N, 3, 3)
+            print("An-isotropic: ", cov_3D.shape)
 
         return cov_3D
 
@@ -282,7 +284,7 @@ class Gaussians:
         # of this function?
         transform_matrix = camera.get_world_to_view_transform().get_matrix()  # (N, 3, 3)
         W = transform_matrix[:,:3,:3]
-        
+
         ### YOUR CODE HERE ###
         # HINT: Can you find a function in this file that can help?
         cov_3D = self.compute_cov_3D(quats=quats, scales=scales)  # (N, 3, 3)
@@ -292,7 +294,7 @@ class Gaussians:
         print("Shape of J: ", J.shape)
         print("Shape of W: ", W.shape)
         print("Shape of cov_3d: ", cov_3D.shape)
-        cov_2D = J @ W @ cov_3D @ W.transpose(1, 2) @ J.transpose(1, 2)  # (N, 2, 2)
+        cov_2D = J @ W @ cov_3D @ W.transpose(-1, -2) @ J.transpose(-1, -2)  # (N, 2, 2)
 
         # Post processing to make sure that each 2D Gaussian covers atleast approximately 1 pixel
         cov_2D[:, 0, 0] += 0.3
