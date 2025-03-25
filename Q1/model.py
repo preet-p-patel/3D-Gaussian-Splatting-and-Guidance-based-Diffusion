@@ -414,11 +414,11 @@ class Scene:
 
         gaussian_means = self.gaussians.means
 
-        transform = camera.get_full_transform()
+        transform = camera.get_world_to_view_transform()
         transformed_means = transform.transform_points(gaussian_means)
 
         
-        z_vals = transformed_means[:, 2]  # (N,)
+        z_vals = transformed_means[:, -1]  # (N,)
 
         return z_vals
 
