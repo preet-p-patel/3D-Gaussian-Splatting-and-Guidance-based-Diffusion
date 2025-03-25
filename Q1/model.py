@@ -545,9 +545,7 @@ class Scene:
 
         ### YOUR CODE HERE ###
         # HINT: Refer to README for a relevant equation.
-        transparency = 1 - alphas
-        transmittance = torch.cumprod(transparency, dim=0)
-        transmittance = torch.cat([torch.ones((1, alphas.shape[1], alphas.shape[2]), device=alphas.device), transmittance[:-1, :, :]], dim=0)  # (N, H, W)
+        transmittance = torch.cumprod(one_minus_alphas[:-1], dim=0)  # (N, H, W)
 
         # Post processing for numerical stability
         transmittance = torch.where(transmittance < 1e-4, 0.0, transmittance)  # (N, H, W)
