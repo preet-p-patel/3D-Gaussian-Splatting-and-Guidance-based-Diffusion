@@ -371,7 +371,7 @@ class Gaussians:
         ### YOUR CODE HERE ###
         # HINT: Refer to README for a relevant equation
         differences = points_2D - means_2D
-        power = -0.5 * torch.sum(torch.matmul(differences, cov_2D_inverse) * differences, dim=-1)  # (N, H*W)
+        power = -0.5 * torch.einsum("nhw,nwk, nhk->nh", differences, cov_2D_inverse, differences)  # (N, H*W)
 
         return power
 
