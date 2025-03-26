@@ -68,8 +68,8 @@ class Gaussians:
         self.pre_act_opacities = data["pre_act_opacities"]
 
         # [Q 1.3.1] NOTE: Uncomment spherical harmonics code for question 1.3.1
-        # if data.get("spherical_harmonics") is not None:
-        #     self.spherical_harmonics = data["spherical_harmonics"]
+        if data.get("spherical_harmonics") is not None:
+            self.spherical_harmonics = data["spherical_harmonics"]
 
         if self.device == "cuda":
             self.to_cuda()
