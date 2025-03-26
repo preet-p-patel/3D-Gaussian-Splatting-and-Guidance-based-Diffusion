@@ -8,7 +8,6 @@ from PIL import Image
 from tqdm import tqdm
 from model import Scene, Gaussians
 from torch.utils.data import DataLoader
-import torch.nn.functional as F
 from data_utils import TruckDataset, visualize_renders
 from skimage.metrics import peak_signal_noise_ratio, structural_similarity
 
@@ -34,8 +33,8 @@ def setup_optimizer(gaussians):
     # HINT: Consider setting different learning rates for different sets of parameters.
     parameters = [
         {'params': [gaussians.pre_act_opacities], 'lr': 0.005, "name": "opacities"},
-        {'params': [gaussians.pre_act_scales], 'lr': 0.007, "name": "scales"},
-        {'params': [gaussians.colours], 'lr': 0.005, "name": "colours"},
+        {'params': [gaussians.pre_act_scales], 'lr': 0.01, "name": "scales"},
+        {'params': [gaussians.colours], 'lr': 0.02, "name": "colours"},
         {'params': [gaussians.means], 'lr': 0.001, "name": "means"},
     ]
     optimizer = torch.optim.Adam(parameters, lr=0.0, eps=1e-15)
@@ -109,7 +108,7 @@ def run_training(args):
         # HINT: Get img_size from train_dataset
         # HINT: Get per_splat from args.gaussians_per_splat
         # HINT: camera is available above
-        pred_img, depth, mask = scene.render(camera, 
+        pred_img, _, _ = scene.render(camera, 
                                     per_splat=args.gaussians_per_splat,
                                     img_size = train_dataset.img_size,
                                     bg_colour=(0.0, 0.0, 0.0)
@@ -118,8 +117,7 @@ def run_training(args):
         # Compute loss
         ### YOUR CODE HERE ###
         # HINT: A simple standard loss function should work.
-        loss = F.l1_loss(pred_img, gt_img)
-
+        loss = torch.nn.functional.mse_loss(pred_img, gt_img)
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
@@ -132,7 +130,7 @@ def run_training(args):
                 viz_cameras, train_dataset.img_size
             )
             viz_frames.append(viz_frame)
-
+        print("Checkpoint 1")
     print("[*] Training Completed.")
 
     # Saving training progess GIF
@@ -160,7 +158,7 @@ def run_training(args):
             # HINT: Get img_size from train_dataset
             # HINT: Get per_splat from args.gaussians_per_splat
             # HINT: camera is available above
-            pred_img, depth, mask = scene.render(camera, 
+            pred_img, _, _ = scene.render(camera, 
                                             per_splat=args.gaussians_per_splat,
                                             img_size = train_dataset.img_size,
                                             bg_colour=(0.0, 0.0, 0.0)
@@ -192,7 +190,7 @@ def run_training(args):
             # HINT: Get img_size from test_dataset
             # HINT: Get per_splat from args.gaussians_per_splat
             # HINT: camera is available above
-            pred_img, depth, mask = scene.render(camera, 
+            pred_img, _, _ = scene.render(camera, 
                                             per_splat=args.gaussians_per_splat,
                                             # img_size=img_size,
                                             img_size = train_dataset.img_size,
