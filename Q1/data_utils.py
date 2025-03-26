@@ -210,5 +210,62 @@ def colours_from_spherical_harmonics(spherical_harmonics, gaussian_dirs):
                                     RGB colour.
     """
     ### YOUR CODE HERE ###
-    colours = None
+    SH_C0 = 0.28209479177387814
+    SH_C1 = 0.4886025119029199
+    SH_C2_0 = 1.0925484305920792
+    SH_C2_1 = -1.0925484305920792
+    SH_C2_2 = 0.31539156525252005
+    SH_C2_3 = -1.0925484305920792
+    SH_C2_4 = 0.5462742152960396
+    SH_C3_0 = -0.5900435899266435
+    SH_C3_1 = 2.890611442640554
+    SH_C3_2 = -0.4570457994644658
+    SH_C3_3 = 0.3731763325901154
+    SH_C3_4 = -0.4570457994644658
+    SH_C3_5 = 1.445305721320277
+    SH_C3_6 = -0.5900435899266435
+
+    c0 = spherical_harmonics[:, :3]  
+    colours = SH_C0 * c0
+
+    c1 = spherical_harmonics[:, 3:6]
+    c2 = spherical_harmonics[:, 6:9]
+    c3 = spherical_harmonics[:, 9:12]
+    x, y, z = gaussian_dirs[:, 0], gaussian_dirs[:, 1], gaussian_dirs[:, 2]
+    colours = colours - SH_C1 * y[:, None] * c1 + SH_C1 * z[:, None] * c2 - SH_C1 * x[:, None] * c3
+
+    if spherical_harmonics.shape[1] > 12:
+        c4 = spherical_harmonics[:, 12:15]
+        c5 = spherical_harmonics[:, 15:18]
+        c6 = spherical_harmonics[:, 18:21]
+        c7 = spherical_harmonics[:, 21:24]
+        c8 = spherical_harmonics[:, 24:27]
+        xx, yy, zz = x**2, y**2, z**2
+        xy, yz, xz = x*y, y*z, x*z
+        colours = colours + SH_C2_0 * xy[:, None] * c4 + \
+                SH_C2_1 * yz[:, None] * c5 + \
+                SH_C2_2 * (2.0 * zz - xx - yy)[:, None] * c6 + \
+                SH_C2_3 * xz[:, None] * c7 + \
+                SH_C2_4 * (xx - yy)[:, None] * c8
+        
+    if spherical_harmonics.shape[1] > 27:
+        c9 = spherical_harmonics[:, 27:30]
+        c10 = spherical_harmonics[:, 30:33]
+        c11 = spherical_harmonics[:, 33:36]
+        c12 = spherical_harmonics[:, 36:39]
+        c13 = spherical_harmonics[:, 39:42]
+        c14 = spherical_harmonics[:, 42:45]
+        c15 = spherical_harmonics[:, 45:48]
+        colours = colours + \
+                SH_C3_0 * y[:, None] * (3.0 * xx - yy)[:, None] * c9 + \
+                SH_C3_1 * xy[:, None] * z[:, None] * c10 + \
+                SH_C3_2 * y[:, None] * (4.0 * zz - xx - yy)[:, None] * c11 + \
+                SH_C3_3 * z[:, None] * (2.0 * zz - 3.0 * xx - 3.0 * yy)[:, None] * c12 + \
+                SH_C3_4 * x[:, None] * (4.0 * zz - xx - yy)[:, None] * c13 + \
+                SH_C3_5 * z[:, None] * (xx - yy)[:, None] * c14 + \
+                SH_C3_6 * x[:, None] * (xx - 3.0 * yy)[:, None] * c15
+    
+    colours = colours + 0.5
+    colours = torch.clamp(colours, min=0.0, max=1.0)
+
     return colours
