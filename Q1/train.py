@@ -192,7 +192,6 @@ def run_training(args):
             # HINT: camera is available above
             pred_img, _, _ = scene.render(camera, 
                                             per_splat=args.gaussians_per_splat,
-                                            # img_size=img_size,
                                             img_size = train_dataset.img_size,
                                             bg_colour=(0.0, 0.0, 0.0)
                                             )
@@ -209,6 +208,9 @@ def run_training(args):
     mean_ssim = np.mean(ssim_vals)
     print(f"[*] Evaluation --- Mean PSNR: {mean_psnr:.3f}")
     print(f"[*] Evaluation --- Mean SSIM: {mean_ssim:.3f}")
+
+    # [*] Evaluation --- Mean PSNR: 28.470
+    # [*] Evaluation --- Mean SSIM: 0.923
 
 def get_args():
 
