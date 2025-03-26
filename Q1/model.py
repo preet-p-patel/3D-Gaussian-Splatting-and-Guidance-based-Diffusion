@@ -6,6 +6,7 @@ from typing import Tuple, Optional
 from pytorch3d.ops.knn import knn_points
 from pytorch3d.renderer.cameras import PerspectiveCameras
 from data_utils import load_gaussians_from_ply, colours_from_spherical_harmonics
+import torch.nn.functional as F
 
 from pytorch3d.transforms import quaternion_to_matrix   # To convert quaternion to rotation matrix
 
