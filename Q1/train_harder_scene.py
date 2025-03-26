@@ -217,6 +217,9 @@ def run_training(args):
     print(f"[*] Evaluation --- Mean PSNR: {mean_psnr:.3f}")
     print(f"[*] Evaluation --- Mean SSIM: {mean_ssim:.3f}")
 
+    # [*] Evaluation --- Mean PSNR: 17.185
+    # [*] Evaluation --- Mean SSIM: 0.589
+
 def get_args():
 
     parser = argparse.ArgumentParser()
