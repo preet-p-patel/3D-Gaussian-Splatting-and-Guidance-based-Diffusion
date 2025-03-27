@@ -35,9 +35,9 @@ def setup_optimizer(gaussians):
     # fast with the default settings.
     # HINT: Consider setting different learning rates for different sets of parameters.
     parameters = [
-        {'params': [gaussians.pre_act_opacities], 'lr': 0.005, "name": "opacities"},
-        {'params': [gaussians.pre_act_scales], 'lr': 0.01, "name": "scales"},
-        {'params': [gaussians.colours], 'lr': 0.02, "name": "colours"},
+        {'params': [gaussians.pre_act_opacities], 'lr': 0.002, "name": "opacities"},
+        {'params': [gaussians.pre_act_scales], 'lr': 0.002, "name": "scales"},
+        {'params': [gaussians.colours], 'lr': 0.002, "name": "colours"},
         {'params': [gaussians.means], 'lr': 0.001, "name": "means"},
     ]
     optimizer = torch.optim.Adam(parameters, lr=0.0, eps=1e-15)
@@ -216,6 +216,9 @@ def run_training(args):
     mean_ssim = np.mean(ssim_vals)
     print(f"[*] Evaluation --- Mean PSNR: {mean_psnr:.3f}")
     print(f"[*] Evaluation --- Mean SSIM: {mean_ssim:.3f}")
+
+    # [*] Evaluation --- Mean PSNR: 17.185
+    # [*] Evaluation --- Mean SSIM: 0.589
 
 def get_args():
 
