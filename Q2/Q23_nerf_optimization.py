@@ -170,7 +170,8 @@ def optimize_nerf(
 
   
             ### YOUR CODE HERE ###
-            pred_rgb = T.Resize(size=(512, 512))(pred_rgb)
+            # pred_rgb = T.Resize(size=(512, 512))(pred_rgb)
+            pred_rgb = torch.nn.functional.interpolate(pred_rgb, (512, 512))
             latents = sds.encode_imgs(pred_rgb)
             if not args.view_dep_text:
               loss = sds.sds_loss(latents, text_cond, text_embeddings_uncond=text_uncond)
