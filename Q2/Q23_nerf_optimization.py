@@ -30,7 +30,7 @@ def optimize_nerf(
     """
 
     # Step 1. Create text embeddings from prompt
-    embeddings = prepare_embeddings(sds, prompt, neg_prompt, view_dependent=False)
+    embeddings = prepare_embeddings(sds, prompt, neg_prompt, view_dependent=True)
 
     # Step 2. Set up NeRF model
     model = NeRFNetwork(args).to(device)
@@ -157,8 +157,8 @@ def optimize_nerf(
             assert azimuth.shape[0] == 1, "Batch size should be 1"
             text_uncond = embeddings["uncond"]
 
-            print("Embeddings keys: ", embeddings.keys())
-            
+            #print("Embeddings keys: ", embeddings.keys())
+
             if not args.view_dep_text:
                 text_cond = embeddings["default"]
             else:
