@@ -30,7 +30,7 @@ def optimize_nerf(
     """
 
     # Step 1. Create text embeddings from prompt
-    embeddings = prepare_embeddings(sds, prompt, neg_prompt, view_dependent=True)
+    embeddings = prepare_embeddings(sds, prompt, neg_prompt, view_dependent=False)
 
     # Step 2. Set up NeRF model
     model = NeRFNetwork(args).to(device)
